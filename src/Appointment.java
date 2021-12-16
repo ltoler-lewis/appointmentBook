@@ -20,6 +20,7 @@ public class Appointment {
 	private Date endDate;
 	
 	public Appointment(String v, String j, String jd, Employee i, ArrayList<Employee> eList, Date start, Date end) {
+		employees = new ArrayList<Employee>();
 		venue = v;
 		job = j;
 		jobDescription = jd;
@@ -30,14 +31,32 @@ public class Appointment {
 		
 		int ra = ThreadLocalRandom.current().nextInt(100000, 1000000);
 		UUID = ra;
+		
+		
 	}
 	
 	public Appointment(String v, String j, Employee i, ArrayList<Employee> eList, Date start, Date end) {
+		employees = new ArrayList<Employee>();
 		venue = v;
 		job = j;
 		jobDescription = "None available";
 		installLead = i;
 		employees = eList;
+		startDate = start;
+		endDate = end;
+	
+		int ra = ThreadLocalRandom.current().nextInt(100000, 1000000);
+		UUID = ra;
+	}
+	
+	public Appointment(String v, String j, Employee i, Employee e, Date start, Date end) {
+		employees = new ArrayList<Employee>();
+		venue = v;
+		job = j;
+		jobDescription = "None available";
+		installLead = i;
+		//employees = new ArrayList<Employee>;
+		employees.add(e);
 		startDate = start;
 		endDate = end;
 	
@@ -95,7 +114,7 @@ public class Appointment {
 		venue = v;
 	}
 	
-	public void setJJob(String j) {
+	public void setJob(String j) {
 		job = j;
 	}
 	
@@ -127,5 +146,5 @@ public class Appointment {
 	public static void exportICS(Appointment a) {
 		
 	}
-
+	
 }

@@ -1,27 +1,76 @@
 import java.io.IOException;
+import java.text.ParseException;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.*;
+import java.awt.*;
+
 
 //Laura Toler
 
 public class appointmentBook{
 
-    public static double avr(double[][] array){
-    	
-    	double sum = 0;
-    	
-    	for(int x = 0; x < array.length; x++) {
-    		double grade = array[x][0];
-    		double weight = array[x][1];
-    		
-    		sum += grade*weight;
-    	}
-    	
-    	
-        return sum;
+	 
+    final static boolean shouldFill = true;
+    final static boolean shouldWeightX = true;
+    final static boolean RIGHT_TO_LEFT = false;
+ 
+    public static void addComponentsToPane(Container pane) {
+        if (RIGHT_TO_LEFT) {
+            pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        }
+ 
+        JButton button;
+    pane.setLayout(new GridBagLayout());
+    GridBagConstraints c = new GridBagConstraints();
+    if (shouldFill) {
+    //natural height, maximum width
+    c.fill = GridBagConstraints.HORIZONTAL;
     }
-
+ 
+    button = new JButton("Button 1");
+    if (shouldWeightX) {
+    c.weightx = 0.5;
+    }
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.gridx = 0;
+    c.gridy = 0;
+    pane.add(button, c);
+ 
+    button = new JButton("Button 2");
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.weightx = 0.5;
+    c.gridx = 1;
+    c.gridy = 0;
+    pane.add(button, c);
+ 
+    button = new JButton("Button 3");
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.weightx = 0.5;
+    c.gridx = 2;
+    c.gridy = 0;
+    pane.add(button, c);
+ 
+    button = new JButton("Long-Named Button 4");
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.ipady = 40;      //make this component tall
+    c.weightx = 0.0;
+    c.gridwidth = 3;
+    c.gridx = 0;
+    c.gridy = 1;
+    pane.add(button, c);
+ 
+    button = new JButton("5");
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.ipady = 0;       //reset to default
+    c.weighty = 1.0;   //request any extra vertical space
+    c.anchor = GridBagConstraints.PAGE_END; //bottom of space
+    c.insets = new Insets(10,0,0,0);  //top padding
+    c.gridx = 1;       //aligned with button 2
+    c.gridwidth = 2;   //2 columns wide
+    c.gridy = 2;       //third row
+    pane.add(button, c);
+    }
+ 
     /**
      * Create the GUI and show it.  For thread safety,
      * this method should be invoked from the
@@ -29,19 +78,17 @@ public class appointmentBook{
      */
     private static void createAndShowGUI() {
         //Create and set up the window.
-        JFrame frame = new JFrame("HelloWorldSwing");
+        JFrame frame = new JFrame("GridBagLayoutDemo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        //Add the ubiquitous "Hello World" label.
-        JLabel label = new JLabel("Hello World");
-        frame.getContentPane().add(label);
-
+ 
+        //Set up the content pane.
+        addComponentsToPane(frame.getContentPane());
+ 
         //Display the window.
         frame.pack();
         frame.setVisible(true);
     }
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ParseException {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -49,7 +96,8 @@ public class appointmentBook{
                 createAndShowGUI();
             }
         });
+        //AppointmentList a = new AppointmentList("temp");
         
-        AppointmentList.importExcelTable("tempPath");
+        //a.importExcelTable("tempPath");
     }
 }
