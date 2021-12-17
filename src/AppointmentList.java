@@ -35,8 +35,7 @@ public class AppointmentList{
 			}
 		}
 		Employee e = new Employee(name);
-		//FIXME
-		//knownEmployees.add(e);
+		knownEmployees.add(e);
 		return e;
 	}
 	
@@ -130,9 +129,15 @@ public class AppointmentList{
             
             Appointment appt = new Appointment(v,j,il,e,sd,ed);
             appointmentList.add(appt);
-            System.out.println();
+            //System.out.println("DEBUG Number of Appointments in appointmentlist in AppointmentList class: " + appointmentList.size());
+            //System.out.println();
         }
-         
+        
+        
+        Sheet secondSheet = workbook.getSheetAt(1);
+        
+        
+        
         workbook.close();
         inputStream.close();
     }

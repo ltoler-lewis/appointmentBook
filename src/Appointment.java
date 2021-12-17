@@ -59,7 +59,8 @@ public class Appointment {
 		employees.add(e);
 		startDate = start;
 		endDate = end;
-	
+		
+		System.out.println("DEBUG: Make appointment");
 		int ra = ThreadLocalRandom.current().nextInt(100000, 1000000);
 		UUID = ra;
 	}
