@@ -88,12 +88,27 @@ public class Appointment {
 	}
 	
 	public boolean isEmployeeGoing(Employee e) {
-		if (e.employeeID == installLead.employeeID || e.name.equals(installLead.name)) {
+		if (e.name.equals(installLead.name)) {
 			return true;
 		}
 		else {
 			for (int x = 0; x < employees.size(); x++) {
-				if (e.employeeID == employees.get(x).employeeID || e.name.equals(employees.get(x).name)) {
+				if (e.name.equals(employees.get(x).name)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+	
+	public boolean isEmployeeGoing(String n) {
+		Employee e = new Employee(n);
+		if ( e.name.equals(installLead.name)) {
+			return true;
+		}
+		else {
+			for (int x = 0; x < employees.size(); x++) {
+				if (e.name.equals(employees.get(x).name)) {
 					return true;
 				}
 			}
@@ -105,7 +120,7 @@ public class Appointment {
 		return startDate;
 	}
 	
-	public Date setEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 

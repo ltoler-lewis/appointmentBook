@@ -1,8 +1,20 @@
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.*;
 import java.awt.*;
+
+import org.jfree.chart.ChartFactory;  
+import org.jfree.chart.ChartPanel;  
+import org.jfree.chart.JFreeChart;  
+import org.jfree.data.category.IntervalCategoryDataset;  
+import org.jfree.data.gantt.Task;  
+import org.jfree.data.gantt.TaskSeries;  
+import org.jfree.data.gantt.TaskSeriesCollection;  
 
 
 //Laura Toler
@@ -13,7 +25,65 @@ public class appointmentBook{
     final static boolean shouldFill = true;
     final static boolean shouldWeightX = true;
     final static boolean RIGHT_TO_LEFT = false;
- 
+    public AppointmentList appointmentList;
+    
+    
+private IntervalCategoryDataset getCategoryDataset() {  
+   
+	TaskSeries series1 = new TaskSeries("Schedule"); 
+	
+	ArrayList<Task> tasklist = new ArrayList<Task>();
+	for (int x = 0; x < appointmentList.knownEmployees.size(); x++) {
+		String name = appointmentList.knownEmployees.get(x).name;
+		
+		//Get all appointments in the list that this employee is part of
+		for(int y = 0; y < appointmentList.appointmentList.size(); y++) {
+			if (appointmentList.appointmentList.get(y).isEmployeeGoing(name)) {
+				String name1 = name;
+				if (y>0) {
+					name1 = name1 + " " + String.valueOf(y);
+				}
+				Task t =  new Task(name1, Date.from(LocalDate.of(2017, 01,31).atStartOfDay().toInstant(ZoneOffset.UTC)),Date.from(LocalDate.of(2017, 2, 4).atStartOfDay().toInstant(ZoneOffset.UTC)));
+				tasklist.add(t);
+			}
+		}
+		
+		for(int z = 1; z < tasklist.size(); z++) {
+			
+		}
+		
+	}
+	
+ 	final Task t4 = new Task(
+          "Design Phase", 
+          Date.from(LocalDate.of(2017, 01,31).atStartOfDay().toInstant(ZoneOffset.UTC)),Date.from(LocalDate.of(2017, 2, 4).atStartOfDay().toInstant(ZoneOffset.UTC))
+      );
+      final Task st41 = new Task(
+           "Design 1", 
+           Date.from(LocalDate.of(2017, 4,28).atStartOfDay().toInstant(ZoneOffset.UTC)),Date.from(LocalDate.of(2017, 5, 4).atStartOfDay().toInstant(ZoneOffset.UTC))
+      );
+      st41.setPercentComplete(1.0);
+      final Task st42 = new Task(
+          "Design 2", 
+          Date.from(LocalDate.of(2017, 05,20).atStartOfDay().toInstant(ZoneOffset.UTC)),Date.from(LocalDate.of(2017, 6, 4).atStartOfDay().toInstant(ZoneOffset.UTC))
+      );
+      st42.setPercentComplete(1.0);
+      final Task st43 = new Task(
+          "Design 3", 
+          Date.from(LocalDate.of(2017, 07,20).atStartOfDay().toInstant(ZoneOffset.UTC)),Date.from(LocalDate.of(2017, 8, 4).atStartOfDay().toInstant(ZoneOffset.UTC))
+      );
+      st43.setPercentComplete(1.0);
+      t4.addSubtask(st41);
+      t4.addSubtask(st42);
+      t4.addSubtask(st43);
+      series1.add(t4);
+  
+      TaskSeriesCollection dataset = new TaskSeriesCollection();  
+      dataset.add(series1);
+      return dataset;  
+    }  
+   
+    
     public static void addComponentsToPane(Container pane) {
         if (RIGHT_TO_LEFT) {
             pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
