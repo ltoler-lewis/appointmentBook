@@ -1,3 +1,4 @@
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -61,7 +62,7 @@ public class appointmentBook{
     				}
     				g++;
     				//Debug printers
-    				System.out.println("Task for " + name1 + " from " + appointmentList.appointmentList.get(y).getStartDate() + " to " + appointmentList.appointmentList.get(y).getEndDate());
+    				//System.out.println("Task for " + name1 + " from " + appointmentList.appointmentList.get(y).getStartDate() + " to " + appointmentList.appointmentList.get(y).getEndDate());
 
 					//Create a taskusing the name and the start/end Dates from the Appointment object
 					Task t =  new Task(name1, appointmentList.appointmentList.get(y).getStartDate(),appointmentList.appointmentList.get(y).getEndDate());
@@ -73,15 +74,15 @@ public class appointmentBook{
 		
     		if(tasklist.size()==0) {//If no appointments found, don't add him to the chart (Not ideal, but whatever)
     			//Do nothing
-    			System.out.println("DEBUG: No tasks for employee");
+    			//System.out.println("DEBUG: No tasks for employee");
     		}
     		else if (tasklist.size() ==1) {//If one appointment found, make a single task 
-    			System.out.println("DEBUG: One task for employee");
+    			//System.out.println("DEBUG: One task for employee");
     			series1.add(tasklist.get(0));
     			tasklist.clear();
     		}
     		else if (tasklist.size() > 1 ) {//If multiple appointments, make initial task the primary task and add the others as subtasks
-    			System.out.println("DEBUG: Several tasks for employee");
+    			//System.out.println("DEBUG: Several tasks for employee");
     			//For loop - start at position 1 (skipping position 0, which will be the primary task) and add each task to the primary task as a subtask
     			for(int v = 1; v < tasklist.size(); v++) {
     				//Set completion percentage to 100. Don't know what'll happen if I don't, but lets nt find out. I'm tired
@@ -101,12 +102,6 @@ public class appointmentBook{
     return dataset;  
     }  
 
-    //Create the GUI and show it.  
-    private static void createAndShowGUI(AppointmentList appointmentList, IntervalCategoryDataset dataset) {
-
-    }
-   
-    
     
     public static void main(String[] args) throws IOException, ParseException {
         //Schedule a job for the event-dispatching thread:
@@ -243,6 +238,17 @@ public class appointmentBook{
                     }
                 });
         	                	
+            	buttonSave.addActionListener(new java.awt.event.ActionListener() {
+                    @Override
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    	try {
+							apptList.saveVisualSchedule();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+                    }
+                });
         	    pane.add(panel, c);
                 //Display the window.
                 frame.pack();
