@@ -111,7 +111,7 @@ public class appointmentBook{
         	c.fill = GridBagConstraints.HORIZONTAL;
         }
  
-        button = new JButton("Button 1");
+        button = new JButton("Add Appointment");
         if (shouldWeightX) {
         	c.weightx = 0.5;
         }
@@ -125,9 +125,9 @@ public class appointmentBook{
     	c.weightx = 0.5;
     	c.gridx = 1;
     	c.gridy = 0;
-    	pane.add(button, c);
+    	//pane.add(button, c);
  
-    	button = new JButton("Button 3");
+    	button = new JButton("Save Changes");
     	c.fill = GridBagConstraints.HORIZONTAL;
     	c.weightx = 0.5;
     	c.gridx = 2;
@@ -150,33 +150,16 @@ public class appointmentBook{
 	    c.gridx = 0;
 	    c.gridy = 1;
 	    pane.add(panel, c);
- 
-	    button = new JButton("5");
-	    c.fill = GridBagConstraints.HORIZONTAL;
-	    c.ipady = 0;       //reset to default
-	    c.weighty = 1.0;   //request any extra vertical space
-	    c.anchor = GridBagConstraints.PAGE_END; //bottom of space
-	    c.insets = new Insets(10,0,0,0);  //top padding
-	    c.gridx = 1;       //aligned with button 2
-	    c.gridwidth = 2;   //2 columns wide
-	    c.gridy = 2;       //third row
-	    pane.add(button, c);
-	    
 
       	
 	    }
     
     	
  
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
-     */
+
+    //Create the GUI and show it.  
+
     private static void createAndShowGUI(IntervalCategoryDataset dataset) {
-    	
-    	//Create dataset
-    	//IntervalCategoryDataset dataset = getCategoryDataset(apptList);  
     	
         //Create and set up the window.
         JFrame frame = new JFrame("GridBagLayoutDemo");
@@ -195,7 +178,11 @@ public class appointmentBook{
     public static void main(String[] args) throws IOException, ParseException {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
-        AppointmentList apptList = new AppointmentList("temp");
+    	//Create the AppointmentList object
+        AppointmentList apptList = new AppointmentList();
+        
+        //Import the appointments from the excel file specified
+        //Doesn't actually use specified file yet
         apptList.importExcelTable("tempPath");
         IntervalCategoryDataset icd = getCategoryDataset(apptList);
         

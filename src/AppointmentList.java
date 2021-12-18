@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Date;
@@ -22,7 +23,7 @@ public class AppointmentList{
 	public ArrayList<Appointment> appointmentList;
 	public ArrayList<Employee> knownEmployees;
 	
-	public AppointmentList(String path) {
+	public AppointmentList() {
 		appointmentList = new ArrayList<Appointment>();
 		
 		knownEmployees = new ArrayList<Employee>();
@@ -46,7 +47,18 @@ public class AppointmentList{
 	}
 	
 	public void orderKnownEmployeeList() {
-		
+	 	int n = knownEmployees.size();  
+	 	for(int i=0; i < n; i++){  
+	 		for(int j=1; j < (n-i); j++){  
+	 			int x = knownEmployees.get(j-1).name.compareTo(knownEmployees.get(j).name);
+	 			
+	 			if(x > 0){  
+	 				//swap elements  
+	 				Collections.swap(knownEmployees, j-1, j);
+                }  
+	                          
+             }  
+	 	}  
 	}
 	
 	public void importICS() {
@@ -133,13 +145,30 @@ public class AppointmentList{
             //System.out.println();
         }
         
+        this.orderKnownEmployeeList();
         
-        Sheet secondSheet = workbook.getSheetAt(1);
+        if (workbook.getNumberOfSheets() <= 1) {
+        	Sheet secondSheet = workbook.createSheet("visual schedule");
+        	System.out.println("DEBUG: Get second sheet");
+        }
+        else{
+        	Sheet secondSheet = workbook.getSheetAt(1);
+        	//Clear anything in the sheet
+        	Iterator<Row> rowIte =  secondSheet.iterator();
+        	while(rowIte.hasNext()){
+        		rowIte.next();              
+        	    rowIte.remove();
+        	}
+        }
+        
+        //FIXME Output graph to excel sheet
+        
         
         
         
         workbook.close();
         inputStream.close();
     }
+	
 	
 }
