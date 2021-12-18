@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,8 @@ public class AppointmentList{
 
 	public ArrayList<Appointment> appointmentList;
 	public ArrayList<Employee> knownEmployees;
+	public String path;
+	
 	
 	public AppointmentList() {
 		appointmentList = new ArrayList<Appointment>();
@@ -74,6 +77,7 @@ public class AppointmentList{
 		//FIXME - change to read in Path
 		System.out.println("In function");
         String excelFilePath = "exampleTable.xlsx";
+        path = excelFilePath;
         System.out.println("Made path");
         FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
         System.out.println("Made input stream based on path");
@@ -170,7 +174,7 @@ public class AppointmentList{
         inputStream.close();
     }
 	
-	public void addAppointment(String venue, String job, String installLead, String technician, String nightJob, String startDate, String endDate) throws ParseException {
+	public void addAppointment(String venue, String job, String installLead, String technician, String nightJob, String startDate, String endDate) throws ParseException, IOException {
 		 Date sd = getDate(startDate);
 		 Date ed = getDate(endDate);
 		 Employee il = addEmployee(installLead);
@@ -179,5 +183,24 @@ public class AppointmentList{
 		 Appointment appt = new Appointment(venue,job,il,e,sd,ed);
          appointmentList.add(appt);
 		 
+         /*
+         FileInputStream inputStream = new FileInputStream(new File(path));
+         System.out.println("Made input stream based on path");
+         
+         //create internal workbook object based on input stream
+         Workbook workbook = new XSSFWorkbook(inputStream);
+         System.out.println("made workbook from input stream");
+         //Get the first sheet. The intended format will have the appointment list on sheet 1 (0) and the visual calendar on sheet 2 (1) 
+         Sheet sheet = workbook.getSheetAt(0);
+         int startRow = 2;
+         int rowNumber = 1;
+         int lastRow = sheet.getLastRowNum();
+         if (lastRow < startRow) {
+             sheet.createRow(startRow);
+         }
+
+         sheet.shiftRows(startRow, lastRow, rowNumber, true, true);
+         sheet.createRow(startRow);
+         */
 	}
 }

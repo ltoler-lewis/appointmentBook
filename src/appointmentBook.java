@@ -25,8 +25,9 @@ public class appointmentBook{
     final static boolean shouldFill = true;
     final static boolean shouldWeightX = true;
     final static boolean RIGHT_TO_LEFT = false;
-    public AppointmentList apptList;
-
+    public static IntervalCategoryDataset dataset;
+    public static JFreeChart chart;
+    public static ChartPanel panel;
 
     private static IntervalCategoryDataset getCategoryDataset(AppointmentList appointmentList) {  
     	    	
@@ -99,113 +100,10 @@ public class appointmentBook{
     dataset.add(series1);
     return dataset;  
     }  
-   
-    
-    public static void addComponentsToPane(Container pane, IntervalCategoryDataset dataset) {
-        if (RIGHT_TO_LEFT) {
-            pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        }
- 
-        JButton button;
-        pane.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        if (shouldFill) {
-        	//natural height, maximum width
-        	c.fill = GridBagConstraints.HORIZONTAL;
-        }
- 
-        button = new JButton("Add Appointment");
-        if (shouldWeightX) {
-        	c.weightx = 0.5;
-        }
-        c.fill = GridBagConstraints.HORIZONTAL;
-    	c.gridx = 0;
-    	c.gridy = 0;
-    	pane.add(button, c);
-    	
-    	//Create input dialog
-    	JTextField installLead = new JTextField(10);
-    	JTextField venue = new JTextField(10);
-    	JTextField empolyee = new JTextField(10);
-    	JTextField nightJob = new JTextField(1);
-    	JTextField startDate = new JTextField(10);
-    	JTextField endDate = new JTextField(10);
-    	JTextField job = new JTextField(10);
-    	Object[] message = {
-    		    "Venue:", venue,
-    		    "Job:", job,
-    		    "Installation Lead:", installLead,
-    		    "Technician:", empolyee,
-    		    "Night Job(Y/N):", nightJob,
-    		    "Start Date (MM/dd/yyyy):", startDate,
-    		    "End Date (MM/dd/yyyy):", endDate,
-    		};
-    	
-    	
-    	button.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-            	int option = JOptionPane.showConfirmDialog(pane, message, "Enter all your values", JOptionPane.OK_CANCEL_OPTION);
-		    	if (option == JOptionPane.OK_OPTION)
-		    	{
-		    	    String value1 = venue.getText();
-		    	    String value2 = job.getText();
-		    	    String value3 = installLead.getText();
-		    	    String value4 = empolyee.getText();
-		    	    String value5 = startDate.getText();
-		    	    String value6 = endDate.getText();
-		    	    String value7 = nightJob.getText();
-
-		    	}
-            }
-        });
- 
- 
-    	button = new JButton("Save Changes");
-    	c.fill = GridBagConstraints.HORIZONTAL;
-    	c.weightx = 0.5;
-    	c.gridx = 2;
-    	c.gridy = 0;
-    	pane.add(button, c);
-    	
-    	//Take dataset generated and make a Gantt Chart
-	    JFreeChart chart = ChartFactory.createGanttChart(  
-	            "Gantt Chart Example", // Chart title  
-	            "Software Development Phases", // X-Axis Label  
-	            "Timeline", // Y-Axis Label  
-	            dataset);  
-	  
-	    ChartPanel panel = new ChartPanel(chart);  
- 
-    	button = new JButton("Long-Named Button 4");
-    	c.fill = GridBagConstraints.HORIZONTAL;
-    	c.ipady = 40;      //make this component tall
-	    c.weightx = 0.0;
-	    c.gridwidth = 3;
-	    c.gridx = 0;
-	    c.gridy = 1;
-	    pane.add(panel, c);
-
-      	
-	    }
-    
-    	
- 
 
     //Create the GUI and show it.  
+    private static void createAndShowGUI(AppointmentList appointmentList, IntervalCategoryDataset dataset) {
 
-    private static void createAndShowGUI(IntervalCategoryDataset dataset) {
-    	
-        //Create and set up the window.
-        JFrame frame = new JFrame("GridBagLayoutDemo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
-        //Set up the content pane.
-        addComponentsToPane(frame.getContentPane(), dataset);
- 
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
     }
    
     
@@ -216,17 +114,139 @@ public class appointmentBook{
     	//Create the AppointmentList object
         AppointmentList apptList = new AppointmentList();
         
+        
         //Import the appointments from the excel file specified into the AppointmentList
         //Doesn't actually use specified file yet
         apptList.importExcelTable("tempPath");
         
         //Take that list of appointments and create an Interval Category Dataset from the JFreeCharts Library 
-        IntervalCategoryDataset icd = getCategoryDataset(apptList);
+        dataset  = getCategoryDataset(apptList);
+        //dataset.addChangeListener(new DatasetChangeListener);
         
         
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                createAndShowGUI(icd); 
+            	//Create and set up the window.
+                JFrame frame = new JFrame("Scheduler");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         
+                //Set up the content pane.
+                //addComponentsToPane(frame.getContentPane(), dataset);
+                
+                Container pane = frame.getContentPane();
+                if (RIGHT_TO_LEFT) {
+                    pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+                }
+         
+                pane.setLayout(new GridBagLayout());
+                GridBagConstraints c = new GridBagConstraints();
+                if (shouldFill) {
+                	//natural height, maximum width
+                	c.fill = GridBagConstraints.HORIZONTAL;
+                }
+         
+                JButton buttonAdd = new JButton("Add Appointment");
+                if (shouldWeightX) {
+                	c.weightx = 0.5;
+                }
+                c.fill = GridBagConstraints.HORIZONTAL;
+            	c.gridx = 0;
+            	c.gridy = 0;
+            	pane.add(buttonAdd, c);
+            	
+            	//Create input dialog
+            	JTextField installLead = new JTextField(10);
+            	JTextField venue = new JTextField(10);
+            	JTextField empolyee = new JTextField(10);
+            	JTextField nightJob = new JTextField(1);
+            	JTextField startDate = new JTextField(10);
+            	JTextField endDate = new JTextField(10);
+            	JTextField job = new JTextField(10);
+            	Object[] message = {
+            		    "Venue:", venue,
+            		    "Job:", job,
+            		    "Installation Lead:", installLead,
+            		    "Technician:", empolyee,
+            		    "Night Job(Y/N):", nightJob,
+            		    "Start Date (MM/dd/yyyy):", startDate,
+            		    "End Date (MM/dd/yyyy):", endDate,
+            		};
+            	
+            	
+
+         
+         
+            	JButton buttonSave = new JButton("Save Changes");
+            	c.fill = GridBagConstraints.HORIZONTAL;
+            	c.weightx = 0.5;
+            	c.gridx = 2;
+            	c.gridy = 0;
+            	pane.add(buttonSave, c);
+            	
+            	//Take dataset generated and make a Gantt Chart
+        	    chart = ChartFactory.createGanttChart(  
+        	            "Gantt Chart Example", // Chart title  
+        	            "Employees", // X-Axis Label  
+        	            "", // Y-Axis Label  
+        	            dataset);  
+        	  
+        	    panel = new ChartPanel(chart);  
+         
+            	JButton button = new JButton("Long-Named Button 4");
+            	c.fill = GridBagConstraints.HORIZONTAL;
+            	c.ipady = 40;      //make this component tall
+        	    c.weightx = 0.0;
+        	    c.gridwidth = 3;
+        	    c.gridx = 0;
+        	    c.gridy = 1;
+        	    
+            	buttonAdd.addActionListener(new java.awt.event.ActionListener() {
+                    @Override
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    	int option = JOptionPane.showConfirmDialog(pane, message, "Enter all your values", JOptionPane.OK_CANCEL_OPTION);
+        		    	if (option == JOptionPane.OK_OPTION)
+        		    	{
+        		    	    String value1 = venue.getText();
+        		    	    String value2 = job.getText();
+        		    	    String value3 = installLead.getText();
+        		    	    String value4 = empolyee.getText();
+        		    	    String value5 = startDate.getText();
+        		    	    String value6 = endDate.getText();
+        		    	    String value7 = nightJob.getText();
+        		    	    
+        		    	    try {
+								apptList.addAppointment(value1, value2, value3, value4, value7, value5, value6);
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (IOException i) {
+								// TODO Auto-generated catch block
+								i.printStackTrace();
+							}
+        		    	}
+        		    	dataset = getCategoryDataset(apptList);
+        		    	chart = ChartFactory.createGanttChart(  
+                	            "Gantt Chart Example", // Chart title  
+                	            "Employees", // X-Axis Label  
+                	            "", // Y-Axis Label  
+                	            dataset);  
+        		    	ChartPanel panel2 = new ChartPanel(chart);  
+        		    	SwingUtilities.invokeLater(() -> {
+        	                frame.remove(panel);
+        	                frame.add(panel2);
+        	                frame.pack();
+        	                frame.invalidate();
+        	                frame.revalidate();
+        	                frame.repaint();
+        	            });
+
+                    }
+                });
+        	                	
+        	    pane.add(panel, c);
+                //Display the window.
+                frame.pack();
+                frame.setVisible(true);
             }
         });
         
