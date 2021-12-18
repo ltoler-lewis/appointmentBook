@@ -65,7 +65,9 @@ public class appointmentBook{
     				//System.out.println("Task for " + name1 + " from " + appointmentList.appointmentList.get(y).getStartDate() + " to " + appointmentList.appointmentList.get(y).getEndDate());
 
 					//Create a taskusing the name and the start/end Dates from the Appointment object
-					Task t =  new Task(name1, appointmentList.appointmentList.get(y).getStartDate(),appointmentList.appointmentList.get(y).getEndDate());
+    				Date temp = appointmentList.appointmentList.get(y).getStartDate();
+    				//temp.setDate(temp.getDate()-1);
+					Task t =  new Task(name1,temp,appointmentList.appointmentList.get(y).getEndDate());
 				
 					//Add task to array
 					tasklist.add(t);
