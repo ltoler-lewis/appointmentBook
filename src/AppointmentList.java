@@ -170,5 +170,14 @@ public class AppointmentList{
         inputStream.close();
     }
 	
-	
+	public void addAppointment(String venue, String job, String installLead, String technician, String nightJob, String startDate, String endDate) throws ParseException {
+		 Date sd = getDate(startDate);
+		 Date ed = getDate(endDate);
+		 Employee il = addEmployee(installLead);
+		 Employee e = addEmployee(technician);
+		 
+		 Appointment appt = new Appointment(venue,job,il,e,sd,ed);
+         appointmentList.add(appt);
+		 
+	}
 }

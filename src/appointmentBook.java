@@ -26,8 +26,8 @@ public class appointmentBook{
     final static boolean shouldWeightX = true;
     final static boolean RIGHT_TO_LEFT = false;
     public AppointmentList apptList;
-    
-    
+
+
     private static IntervalCategoryDataset getCategoryDataset(AppointmentList appointmentList) {  
     	    	
     	TaskSeries series1 = new TaskSeries("Schedule"); 
@@ -35,11 +35,14 @@ public class appointmentBook{
     	//System.out.println("DEBUG: Number of appointments in apptlist: " + appointmentList.appointmentList.size());
     	//System.out.println("DEBUG: Number of known employees in apptlist: " + appointmentList.knownEmployees.size());
 
-    	
+    	//Create a list to hold Task Objects from JFreeChart library
     	ArrayList<Task> tasklist = new ArrayList<Task>();
+    	
+    	//Do this for each employee
     	for (int x = 0; x < appointmentList.knownEmployees.size(); x++) {
+    		//Get their name
     		String name = appointmentList.knownEmployees.get(x).name;
-    		System.out.println("Looking for appointments for: " + name);
+    		//System.out.println("DEBUG: Looking for appointments for: " + name);
 		
     		//Get all appointments in the list that this employee is part of
     		//Check each appointment
@@ -119,13 +122,44 @@ public class appointmentBook{
     	c.gridx = 0;
     	c.gridy = 0;
     	pane.add(button, c);
+    	
+    	//Create input dialog
+    	JTextField installLead = new JTextField(10);
+    	JTextField venue = new JTextField(10);
+    	JTextField empolyee = new JTextField(10);
+    	JTextField nightJob = new JTextField(1);
+    	JTextField startDate = new JTextField(10);
+    	JTextField endDate = new JTextField(10);
+    	JTextField job = new JTextField(10);
+    	Object[] message = {
+    		    "Venue:", venue,
+    		    "Job:", job,
+    		    "Installation Lead:", installLead,
+    		    "Technician:", empolyee,
+    		    "Night Job(Y/N):", nightJob,
+    		    "Start Date (MM/dd/yyyy):", startDate,
+    		    "End Date (MM/dd/yyyy):", endDate,
+    		};
+    	
+    	
+    	button.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	int option = JOptionPane.showConfirmDialog(pane, message, "Enter all your values", JOptionPane.OK_CANCEL_OPTION);
+		    	if (option == JOptionPane.OK_OPTION)
+		    	{
+		    	    String value1 = venue.getText();
+		    	    String value2 = job.getText();
+		    	    String value3 = installLead.getText();
+		    	    String value4 = empolyee.getText();
+		    	    String value5 = startDate.getText();
+		    	    String value6 = endDate.getText();
+		    	    String value7 = nightJob.getText();
+
+		    	}
+            }
+        });
  
-    	button = new JButton("Button 2");
-    	c.fill = GridBagConstraints.HORIZONTAL;
-    	c.weightx = 0.5;
-    	c.gridx = 1;
-    	c.gridy = 0;
-    	//pane.add(button, c);
  
     	button = new JButton("Save Changes");
     	c.fill = GridBagConstraints.HORIZONTAL;
@@ -134,6 +168,7 @@ public class appointmentBook{
     	c.gridy = 0;
     	pane.add(button, c);
     	
+    	//Take dataset generated and make a Gantt Chart
 	    JFreeChart chart = ChartFactory.createGanttChart(  
 	            "Gantt Chart Example", // Chart title  
 	            "Software Development Phases", // X-Axis Label  
@@ -181,9 +216,11 @@ public class appointmentBook{
     	//Create the AppointmentList object
         AppointmentList apptList = new AppointmentList();
         
-        //Import the appointments from the excel file specified
+        //Import the appointments from the excel file specified into the AppointmentList
         //Doesn't actually use specified file yet
         apptList.importExcelTable("tempPath");
+        
+        //Take that list of appointments and create an Interval Category Dataset from the JFreeCharts Library 
         IntervalCategoryDataset icd = getCategoryDataset(apptList);
         
         
